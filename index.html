@@ -22,12 +22,12 @@
             })
             
             function gamehost() {
-                document.getElementsByName("mainmenu") = null
+                document.getElementsByTagName("mainmenu") = null
                 peer.connect(selfid)
             }
             
             function gamejoin() {
-                document.getElementsByName("mainmenu") = null
+                document.getElementsByTagName("mainmenu") = null
                 peer.connect(document.getElementById("dapeerid").value)
             }
             
