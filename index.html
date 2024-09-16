@@ -4,11 +4,16 @@
         <title>🗣️🔥🗣️🔥</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="peerjs.js"></script>
+        <script src="index.js"></script>
     </head>
     <body>
-        <h1>FIRE IN DA HOLE</h1>
-        <button>host</button>
-        <input placeholder="ip to join">
-        <button>join (with ip)</button>
+        <h1 name="mainmenu">FIRE IN DA HOLE</h1>
+        <button onclick="gamehost()" name="mainmenu">host</button>
+        <input placeholder="gameid to join", id="dapeerid" name="mainmenu">
+        <button onclick="gamejoin()" name="mainmenu">join (with ip)</button>
+        <header name="game" id="1">i have 0 lobotomies</header>
+        <header name="game" id="1">opponent has 0 lobotomies</header>
+        <button name="game" onclick="get_lobotomy()">get lobotomy</button>
     </body>
 </html>
