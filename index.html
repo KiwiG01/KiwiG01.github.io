@@ -4,53 +4,12 @@
         <title>🗣️🔥🗣️🔥</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="peerjs.js"></script>
+        <script type="text/module" src="index.js"></script>
     </head>
     <body>
-        <script>
-            var peer = new Peer()
-            var selfid = -1
-            
-            var lobotomy = 0
-            
-            peer.on("open", function(id) {
-                document.getElementById("cancopy").value = id.toString()
-            })
-            
-            peer.on("connection", function(conn) 
-            {
-                conn.on("data", function(data) {
-                    document.getElementById("2").value = data.toString()
-                })
-                conn.send(lobotomy)
-            })
-            
-            function gamehost() {
-                peer.connect()
-                for (let i = 0; i < document.querySelectorAll(state="mainmenu").length; i++) {
-                    querySelectorAll(state="mainmenu")[i].style.visibility = "hidden"
-                }
-            }
-            
-            function gamejoin() {
-                peer.connect(document.getElementById("dapeerid").value)
-                for (let i = 0; i < document.querySelectorAll(state="mainmenu").length; i++) {
-                    querySelectorAll(state="mainmenu")[i].style.visibility = "hidden"
-                }
-            }
-
-            function get_lobotomy() {
-                lobotomy += 1
-                document.getElementById("1").value = lobotomy.toString()
-            }
-        </script>
         <h1>FIRE IN DA HOLE</h1>
-        <header id="cancopy">you gameid is </header>
-        <button onclick="gamehost()" state="mainmenu" type="button">host</button>
-        <input placeholder="gameid to join", id="dapeerid" state="mainmenu">
-        <button onclick="gamejoin()" state="mainmenu" type="button">join (with ip)</button>
-        <header id="1">i have 0 lobotomies</header>
-        <header id="2">opponent has 0 lobotomies</header>
-        <button onclick="get_lobotomy()" type="button">get lobotomy</button>
+        <header id="1">you have 0 lobotomies</header>
+        <header id="2">the opponent has 0 lobotomies</header>
+        <button id="getfire" type="button">get lobotomy</button>
     </body>
 </html>
