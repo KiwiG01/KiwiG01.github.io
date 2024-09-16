@@ -22,12 +22,12 @@
             })
             
             function gamehost() {
-                document.getElementsByName("mainmenu").style.display = "none"
+                document.getElementsByName("mainmenu").style.visibility = "hidden"
                 peer.connect(selfid)
             }
             
             function gamejoin() {
-                document.getElementsByName("mainmenu").style.display = "none"
+                document.getElementsByName("mainmenu").style.visibility = "hidden"
                 peer.connect(document.getElementById("dapeerid").value)
             }
             
