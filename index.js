@@ -1,21 +1,24 @@
-import { io } from "socket.io"
 const socket = io()
 
-const wateronthehill = 0
-const fireinthehole = 0
-const areaconfirmed = 0
-const rockontheground = 0
-const windfromthelandscape = 0
-const airdetected = 0
+wateronthehill = 0
+fireinthehole = 0
+areaconfirmed = 0
+rockontheground = 0
+windfromthelandscape = 0
+airdetected = 0
+totallobotomies = 0
 
 socket.on("updatePlayers", function(players) {
-    
+    for (var i in players) {
+        if (i != socket.id) {
+            console.log(players[i]["woth"])
+            document.getElementById("2").textContent = "the opponent has " + players[i]["total"] + " lobotomies"
+        }
+    }
 })
 
-document.getElementById("getfire").onclick = get_lobotomy
-
 function get_lobotomy() {
-    var rand = Math.floor(Math.random() * 11)+1;
+    var rand = Math.floor(Math.random() * 11) + 1;
     if (rand == 1 || rand == 3 || rand == 6) {
         wateronthehill += 1
     }
@@ -34,6 +37,16 @@ function get_lobotomy() {
     if (rand == 10) {
         airdetected += 1
     }
-    document.getElementById("1").value = (wateronthehill + fireinthehole + areaconfirmed + rockontheground + windfromthelandscape + airdetected).toString()
-    console.log((wateronthehill + fireinthehole + areaconfirmed + rockontheground + windfromthelandscape + airdetected).toString())
+    totallobotomies = (wateronthehill + fireinthehole + areaconfirmed + rockontheground + windfromthelandscape + airdetected)
+    document.getElementById("1").textContent = "you have " + totallobotomies + " lobotomies"
+    console.log(totallobotomies)
+    socket.emit("setLobotomy", {
+        woth: wateronthehill, 
+        fith: fireinthehole, 
+        ac: areaconfirmed, 
+        rotg: rockontheground, 
+        wftl: windfromthelandscape, 
+        ad: airdetected, total: 
+        totallobotomies
+    })
 }
