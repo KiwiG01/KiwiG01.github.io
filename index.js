@@ -1,52 +1,103 @@
 const socket = io()
 
-wateronthehill = 0
-fireinthehole = 0
-areaconfirmed = 0
-rockontheground = 0
-windfromthelandscape = 0
-airdetected = 0
-totallobotomies = 0
+firstlob = "na"
+secondlob = "na"
+thirdlob = "na"
+moners = 2
+investedMoners = 0
+otherInvestedMoners = 0
+
+fight = false
+otherFight = false
+
+function reset_faces() {
+    firstlob = "na"
+    secondlob = "na"
+    thirdlob = "na"
+    document.getElementById("1p").src = firstlob + ".png"
+    document.getElementById("2p").src = secondlob + ".png"
+    document.getElementById("3p").src = thirdlob + ".png"
+    document.getElementById("1o").src = "na.png"
+    document.getElementById("2o").src = "na.png"
+    document.getElementById("3o").src = "na.png"
+}
 
 socket.on("updatePlayers", function(players) {
     for (var i in players) {
         if (i != socket.id) {
-            console.log(players[i]["woth"])
-            document.getElementById("2").textContent = "the opponent has " + players[i]["total"] + " lobotomies"
+        document.getElementById("1o").src = players[i]["lob1"] + ".png"
+        document.getElementById("2o").src = players[i]["lob1"] + ".png"
+        document.getElementById("3o").src = players[i]["lob1"] + ".png"
+        otherFight = players[i]["fight"]
+        otherInvestedMoners = players[i]["invmon"]
         }
     }
 })
 
-function get_lobotomy() {
-    var rand = Math.floor(Math.random() * 11) + 1;
-    if (rand == 1 || rand == 3 || rand == 6) {
-        wateronthehill += 1
+socket.on("giveMoners", function(payload) {
+    fight = false
+    console.log(payload["plr"] == socket.id)
+    reset_faces()
+    if (payload["plr"] == socket.id) {
+        moners += payload["moners"]
+        investedMoners = 0
     }
-    if (rand == 2 || rand == 4 || rand == 5) {
-        fireinthehole += 1
-    }
-    if (rand == 7 || rand == 11) {
-        areaconfirmed += 1
-    }
-    if (rand == 8) {
-        rockontheground += 1
-    }
-    if (rand == 9) {
-        windfromthelandscape += 1
-    }
-    if (rand == 10) {
-        airdetected += 1
-    }
-    totallobotomies = (wateronthehill + fireinthehole + areaconfirmed + rockontheground + windfromthelandscape + airdetected)
-    document.getElementById("1").textContent = "you have " + totallobotomies + " lobotomies"
-    console.log(totallobotomies)
+    document.getElementById("moners").textContent = "you got " + moners + " moners"
     socket.emit("setLobotomy", {
-        woth: wateronthehill, 
-        fith: fireinthehole, 
-        ac: areaconfirmed, 
-        rotg: rockontheground, 
-        wftl: windfromthelandscape, 
-        ad: airdetected, total: 
-        totallobotomies
+        lob1: firstlob,
+        mon: moners,
+        invmon: investedMoners,
+        fight: fight
+    })
+})
+
+function fight_lobotomy() {
+    fight = true
+    socket.emit("setLobotomy", {
+        lob1: firstlob,
+        mon: moners,
+        invmon: investedMoners,
+        fight: fight
+    })
+    if (fight && otherFight) {
+        socket.emit("fightLobotomy")
+    }
+}
+
+function get_lobotomy() {
+    console.log(firstlob)
+    var rand = Math.floor(Math.random() * 11) + 1;
+    if (moners > 0 && firstlob == "na") {
+        if (rand == 1 || rand == 3 || rand == 6) {
+            firstlob = "easy"
+        }
+        if (rand == 2 || rand == 4 || rand == 5) {
+            firstlob = "normal"
+        }
+        if (rand == 7 || rand == 11) {
+            firstlob = "hard"
+        }
+        if (rand == 8) {
+            firstlob = "harder"
+        }
+        if (rand == 9) {
+            firstlob = "insane"
+        }
+        if (rand == 10) {
+            firstlob = "auto"
+        }
+        moners -= 1
+        investedMoners += 1
+    }
+    document.getElementById("1p").src = firstlob + ".png"
+    document.getElementById("2p").src = firstlob + ".png"
+    document.getElementById("3p").src = firstlob + ".png"
+    document.getElementById("moners").textContent = "you got " + moners + " moners"
+
+    socket.emit("setLobotomy", {
+        lob1: firstlob,
+        mon: moners,
+        invmon: investedMoners,
+        fight: fight
     })
 }

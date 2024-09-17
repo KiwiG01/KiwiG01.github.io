@@ -6,11 +6,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
         <script type="text/javascript" src="index.js"></script>
+        <link rel="stylesheet" href="index.css">
     </head>
     <body>
         <h1>FIRE IN DA HOLE</h1>
-        <header id="1">you have 0 lobotomies</header>
-        <header id="2">the opponent has 0 lobotomies</header>
-        <button id="getfire" type="button" onclick="get_lobotomy()">get lobotomy</button>
+        <button type="button" onclick="get_lobotomy()">Gamble!</button>
+        <br>
+        <header id="moners">you got 2 moners</header>
+        <br>
+        <img id="1o" src="na.png" class="opponentImage" alt="😢 (1) no fire (1) 😢">
+        <img id="2o" src="na.png" class="opponentImage" alt="😢 (2) no fire (2) 😢">
+        <img id="3o" src="na.png" class="opponentImage" alt="😢 (3) no fire (3) 😢">
+        <br>
+        <img id="1p" src="na.png" alt="😢 (1) no fire (1) 😢">
+        <img id="2p" src="na.png" alt="😢 (2) no fire (2) 😢">
+        <img id="3p" src="na.png" alt="😢 (3) no fire (3) 😢">
+        <br>
+        <button type="button" onclick="fight_lobotomy()">😡😡 FIGHT ALREADY 😡😡</button>
     </body>
 </html>
