@@ -1,10 +1,13 @@
 <h1>FIRE IN DA HOLE!!1</h1>
 <img src="button.png">
 <header>requirements</header>
+<br>
 - NodeJS
 - ExpressJS (from node)
 - Socket.IO (from node)
+<br>
 <header>how to setup da game</header>
+<br>
 Step 1: Download ZIP of Repository
 Step 2: Unzip wherever you want
 Step 3: Open Command Prompt in the unzipped folder (go to search bar and type in 'cmd')
@@ -19,7 +22,9 @@ Step 8: Paste in the value and add
 at the end
 Step 9: Send the site to your friend
 Step 10: Play da game 🗣️🔥🗣️🔥
+<br>
 <header>how to play da game</header>
+<br>
 The "Gamble!" button, well, gambles you a icon.
 But it's not free. There are moners; you practically lose
 once the value becomes 0.
