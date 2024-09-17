@@ -1,12 +1,12 @@
 <h1>FIRE IN DA HOLE!!1</h1>
 <img src="button.png">
-<header>requirements</header>
+<header>requirements:</header>
 <br>
 - NodeJS
 - ExpressJS (from node)
 - Socket.IO (from node)
 <br>
-<header>how to setup da game</header>
+<header>how to setup da game:</header>
 <br>
 Step 1: Download ZIP of Repository
 <br>
@@ -36,7 +36,7 @@ Step 9: Send the site to your friend
 <br>
 Step 10: Play da game 🗣️🔥🗣️🔥
 <br>
-<header>how to play da game</header>
+<header>how to play da game:</header>
 <br>
 The "Gamble!" button, well, gambles you a icon.
 <br>
