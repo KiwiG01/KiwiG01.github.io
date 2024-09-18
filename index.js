@@ -1,5 +1,7 @@
 const socket = io()
 
+players = {}
+
 firstlob = "na"
 moners = 2
 investedMoners = 0
@@ -7,6 +9,9 @@ otherInvestedMoners = 0
 
 fight = false
 otherFight = false
+
+otherKey = -1
+myKey = -1
 
 function reset_faces() {
     firstlob = "na"
@@ -20,7 +25,8 @@ function reset_faces() {
     document.getElementById("3o").src = "na.png"
 }
 
-socket.on("updatePlayers", function(players) {
+socket.on("updatePlayers", function(bplayers) {
+    players = bplayers
     for (var i in players) {
         if (i != socket.id) {
         document.getElementById("1o").src = players[i]["lob1"] + ".png"
@@ -28,20 +34,24 @@ socket.on("updatePlayers", function(players) {
         document.getElementById("3o").src = players[i]["lob1"] + ".png"
         otherFight = players[i]["fight"]
         otherInvestedMoners = players[i]["invmon"]
+        otherKey = players[i]["key"]
+        } else {
+            myKey = players[i]["key"]
         }
     }
 })
 
 socket.on("giveMoners", function(payload) {
     fight = false
-    console.log(payload["plr"] == socket.id)
     reset_faces()
-    if (payload["plr"] == socket.id) {
+    console.log(payload["plr"])
+    if (payload["plr"] == myKey) {
         moners += payload["moners"]
         investedMoners = 0
     }
     document.getElementById("moners").textContent = "you got " + moners + " moners"
     socket.emit("setLobotomy", {
+        key: myKey,
         lob1: firstlob,
         mon: moners,
         invmon: investedMoners,
@@ -53,7 +63,7 @@ socket.on("gameFinished", function(who) {
     if (who == "na") {
         alert("Nobody won!!1")
     } else {
-        if (who == socket.id) {
+        if (players[who] == otherKey) {
             alert("You lost :((( 😢😢😡😡😡")
         } else {
             alert("You won!1!")
@@ -65,6 +75,7 @@ socket.on("gameFinished", function(who) {
 function fight_lobotomy() {
     fight = true
     socket.emit("setLobotomy", {
+        key: myKey,
         lob1: firstlob,
         mon: moners,
         invmon: investedMoners,
@@ -107,7 +118,10 @@ function get_lobotomy() {
     document.getElementById("3p").src = firstlob + ".png"
     document.getElementById("moners").textContent = "you got " + moners + " moners"
 
+    console.log(myKey)
+
     socket.emit("setLobotomy", {
+        key: myKey,
         lob1: firstlob,
         mon: moners,
         invmon: investedMoners,

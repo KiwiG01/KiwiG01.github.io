@@ -8,12 +8,18 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 const port = 6969
 
+var plrcount = 0
+
 round = 1
 
 app.use(express.static(__dirname))
 
 app.get("/", function(req, res) {
-    res.sendFile(__dirname+"/index.html")
+    if (plrcount < 2) {
+        res.sendFile(__dirname+"/index.html")
+    } else {
+        res.sendFile(__dirname+"/failed/amount.html")
+    }
 })
 
 const players = {}
@@ -25,17 +31,21 @@ io.on("connection", function(socket) {
     console.log("connection init")
 
     players[socket.id] = {
+        key: plrcount,
         lob1: "na",
         mon: 0,
         invmon: 0,
         fight: false
     }
 
+    plrcount += 1
+
     console.log(players)
 
     io.emit("updatePlayers", players)
 
     socket.on("disconnect", function(reason) {
+        plrcount -= 1
         delete players[socket.id]
         io.emit("updatePlayers", players)
     })
@@ -47,12 +57,12 @@ io.on("connection", function(socket) {
 
     socket.on("fightLobotomy", function() {
         var plrfromplrs
-        for (i in Object.keys(players)) {
-            if (Object.keys(players)[i] != socket.id) {
-                plrfromplrs = Object.keys(players)[i]
+        for (i in players) {
+            if (players[i]["key"] != players[socket.id]["key"]) {
+                plrfromplrs = players[i]
+                console.log(i)
             }
         }
-        plrfromplrs = players[plrfromplrs]
         round += 1
         if (round == 5) {
             if (plrfromplrs["mon"] > players[socket.id]["mon"]) {
@@ -71,21 +81,23 @@ io.on("connection", function(socket) {
         console.log(strengths[plrfromplrs["lob1"]])
         if (plr < otherplr) {
             console.log("plr1 wins")
-            io.emit("giveMoners", {"moners": 2, "plr": plrfromplrs})
+            console.log(plrfromplrs["key"])
+            io.emit("giveMoners", {"moners": 2, "plr": plrfromplrs["key"]})
         }
         if (plr > otherplr) {
             console.log("plr2 wins")
-            io.emit("giveMoners", {"moners": 2, "plr": socket.id})
+            console.log(players[socket.id]["key"])
+            io.emit("giveMoners", {"moners": 2, "plr": players[socket.id]["key"]})
         }
         if (plr == otherplr) {
             console.log("no one won")
-            io.emit("giveMoners", {"moners": 0, "plr": 0})
+            io.emit("giveMoners", {"moners": 0, "plr": -1})
         }
     })
 })
 
 server.listen(port, function() {
-    console.log("Example app listening at port " + port)
+    console.log("Fire In Da Hole listening at port " + port)
 })
 
 console.log("server DID load!")
