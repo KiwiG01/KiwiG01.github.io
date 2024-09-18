@@ -54,9 +54,9 @@ socket.on("gameFinished", function(who) {
         alert("Nobody won!!1")
     } else {
         if (who == socket.id) {
-            alert("You won!1!")
-        } else {
             alert("You lost :((( 😢😢😡😡😡")
+        } else {
+            alert("You won!1!")
         }
     }
     location.reload()
