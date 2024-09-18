@@ -51,6 +51,18 @@ socket.on("giveMoners", function(payload) {
     })
 })
 
+socket.on("gameFinished", function(who) {
+    if (who == "na") {
+        alert("Nobody won!!1")
+    } else {
+        if (who == socket.id) {
+            alert("You won!1!")
+        } else {
+            alert("You lost :((( 😢😢😡😡😡")
+        }
+    }
+})
+
 function fight_lobotomy() {
     fight = true
     socket.emit("setLobotomy", {

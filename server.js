@@ -8,6 +8,8 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 const port = 6969
 
+round = 1
+
 app.use(express.static(__dirname))
 
 app.get("/", function(req, res) {
@@ -51,6 +53,18 @@ io.on("connection", function(socket) {
             }
         }
         plrfromplrs = players[plrfromplrs]
+        round += 1
+        if (round == 5) {
+            if (plrfromplrs["mon"] > players[socket.id]["mon"]) {
+                io.emit("gameFinished", plrfromplrs)
+            }
+            if (plrfromplrs["mon"] < players[socket.id]["mon"]) {
+                io.emit("gameFinished", players[socket.id])
+            }
+            if (plrfromplrs["mon"] == players[socket.id]["mon"]) {
+                io.emit("gameFinished", "na")
+            }
+        }
         var plr = strengths[players[socket.id]["lob1"]]
         var otherplr = strengths[plrfromplrs["lob1"]]
         console.log(strengths[players[socket.id]["lob1"]])
