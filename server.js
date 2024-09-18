@@ -8,7 +8,7 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 const port = 6969
 
-var plrcount = 0
+plrcount = 0
 
 round = 1
 
@@ -30,6 +30,12 @@ const strengths = {"easy": 1,
 io.on("connection", function(socket) {
     console.log("connection init")
 
+    socket.on("disconnect", function(reason) {
+        delete players[socket.id]
+        plrcount -= 1
+        io.emit("updatePlayers", players)
+    })
+
     players[socket.id] = {
         key: plrcount,
         lob1: "na",
@@ -44,12 +50,6 @@ io.on("connection", function(socket) {
 
     io.emit("updatePlayers", players)
 
-    socket.on("disconnect", function(reason) {
-        plrcount -= 1
-        delete players[socket.id]
-        io.emit("updatePlayers", players)
-    })
-
     socket.on("setLobotomy", function(payload) {
         players[socket.id] = payload
         io.emit("updatePlayers", players)
@@ -58,13 +58,15 @@ io.on("connection", function(socket) {
     socket.on("fightLobotomy", function() {
         var plrfromplrs
         for (i in players) {
-            if (players[i]["key"] != players[socket.id]["key"]) {
-                plrfromplrs = players[i]
-                console.log(i)
+            if (socket.id in players) {
+                if (socket.id != i) {
+                    plrfromplrs = i
+                }
             }
         }
+        plrfromplrs = players[plrfromplrs]
         round += 1
-        if (round == 5) {
+        if (round/2 == 5) {
             if (plrfromplrs["mon"] > players[socket.id]["mon"]) {
                 io.emit("gameFinished", plrfromplrs)
             }
@@ -75,6 +77,7 @@ io.on("connection", function(socket) {
                 io.emit("gameFinished", "na")
             }
         }
+        console.log(plrfromplrs)
         var plr = strengths[players[socket.id]["lob1"]]
         var otherplr = strengths[plrfromplrs["lob1"]]
         console.log(strengths[players[socket.id]["lob1"]])
