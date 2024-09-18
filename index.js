@@ -59,15 +59,22 @@ socket.on("giveMoners", function(payload) {
     })
 })
 
-socket.on("gameFinished", function(who) {
-    if (who == "na") {
-        alert("Nobody won!!1")
+socket.on("win", function(who) {
+    console.log(who)
+    if (players[who]["key"] == otherKey) {
+        alert("You won!1!")
     } else {
-        if (players[who] == otherKey) {
-            alert("You lost :((( 😢😢😡😡😡")
-        } else {
-            alert("You won!1!")
-        }
+        alert("This is an error. Reset the page please.")
+    }
+    location.reload()
+})
+
+socket.on("lose", function(who) {
+    console.log(who)
+    if (players[who]["key"] == otherKey) {
+        alert("You lost :((( 😢😢😡😡😡")
+    } else {
+        alert("This is an error. Reset the page please.")
     }
     location.reload()
 })

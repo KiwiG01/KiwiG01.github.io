@@ -33,6 +33,7 @@ io.on("connection", function(socket) {
     socket.on("disconnect", function(reason) {
         delete players[socket.id]
         plrcount -= 1
+        console.log(plrcount)
         io.emit("updatePlayers", players)
     })
 
@@ -66,35 +67,44 @@ io.on("connection", function(socket) {
         }
         plrfromplrs = players[plrfromplrs]
         round += 1
-        if (round/2 == 5) {
-            if (plrfromplrs["mon"] > players[socket.id]["mon"]) {
-                io.emit("gameFinished", plrfromplrs)
-            }
-            if (plrfromplrs["mon"] < players[socket.id]["mon"]) {
-                io.emit("gameFinished", players[socket.id])
-            }
-            if (plrfromplrs["mon"] == players[socket.id]["mon"]) {
-                io.emit("gameFinished", "na")
-            }
+        if (plrfromplrs["mon"] >= 10) {
+            io.emit("win", plrfromplrs["key"])
+            io.emit("lose", players[socket.id]["key"])
+        }
+        else if (players[socket.id]["mon"] >= 10) {
+            io.emit("lose", plrfromplrs["key"])
+            io.emit("win", players[socket.id]["key"])
+        }
+        else if (plrfromplrs["mon"] == 0) {
+            io.emit("lose", plrfromplrs["key"])
+            io.emit("win", players[socket.id]["key"])
+        }
+        else if (players[socket.id]["mon"] == 0) {
+            io.emit("win", plrfromplrs["key"])
+            io.emit("lose", players[socket.id]["key"])
         }
         console.log(plrfromplrs)
         var plr = strengths[players[socket.id]["lob1"]]
         var otherplr = strengths[plrfromplrs["lob1"]]
         console.log(strengths[players[socket.id]["lob1"]])
         console.log(strengths[plrfromplrs["lob1"]])
-        if (plr < otherplr) {
-            console.log("plr1 wins")
-            console.log(plrfromplrs["key"])
-            io.emit("giveMoners", {"moners": 2, "plr": plrfromplrs["key"]})
-        }
-        if (plr > otherplr) {
-            console.log("plr2 wins")
-            console.log(players[socket.id]["key"])
-            io.emit("giveMoners", {"moners": 2, "plr": players[socket.id]["key"]})
-        }
-        if (plr == otherplr) {
-            console.log("no one won")
-            io.emit("giveMoners", {"moners": 0, "plr": -1})
+        if ((players[socket.id]["lob1"] != "na" && plrfromplrs["lob1"] != "na") || (players[socket.id]["lob1"] != undefined && plrfromplrs["lob1"] != undefined)) {
+            if (plr < otherplr) {
+                console.log("plr1 wins")
+                console.log(plrfromplrs["key"])
+                io.emit("giveMoners", {"moners": 2, "plr": plrfromplrs["key"]})
+            }
+            else if (plr > otherplr) {
+                console.log("plr2 wins")
+                console.log(players[socket.id]["key"])
+                io.emit("giveMoners", {"moners": 2, "plr": players[socket.id]["key"]})
+            }
+            else {
+                console.log("no one won")
+                io.emit("giveMoners", {"moners": 0, "plr": -1})
+            }
+        } else {
+            console.log("failed to load lobotomy... are you sure that they exist?")
         }
     })
 })
