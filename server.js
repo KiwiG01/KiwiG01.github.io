@@ -79,8 +79,7 @@ io.on("connection", function(socket) {
         }
         if (plr == otherplr) {
             console.log("no one won")
-            socket.broadcast.emit("updatePlayers", players)
-            socket.emit("updatePlayers", players)
+            io.emit("giveMoners", {"moners": 0, "plr": socket.id})
         }
     })
 })

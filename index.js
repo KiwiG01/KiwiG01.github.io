@@ -1,8 +1,6 @@
 const socket = io()
 
 firstlob = "na"
-secondlob = "na"
-thirdlob = "na"
 moners = 2
 investedMoners = 0
 otherInvestedMoners = 0
@@ -61,6 +59,7 @@ socket.on("gameFinished", function(who) {
             alert("You lost :((( 😢😢😡😡😡")
         }
     }
+    location.reload()
 })
 
 function fight_lobotomy() {
@@ -79,7 +78,7 @@ function fight_lobotomy() {
 function get_lobotomy() {
     console.log(firstlob)
     var rand = Math.floor(Math.random() * 11) + 1;
-    if (moners > 0 && firstlob == "na") {
+    if (firstlob == "na") {
         if (rand == 1 || rand == 3 || rand == 6) {
             firstlob = "easy"
         }
@@ -98,7 +97,9 @@ function get_lobotomy() {
         if (rand == 10) {
             firstlob = "auto"
         }
-        moners -= 1
+        if (moners > 0) {
+            moners -= 1
+        }
         investedMoners += 1
     }
     document.getElementById("1p").src = firstlob + ".png"
